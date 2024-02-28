@@ -186,8 +186,9 @@ def printKennardStonePLS(X_train, y_train,X_test, y_test, n_components):
     rmse_calib, mae_calib, score_calib = np.sqrt(mean_squared_error(y_train, y_calib)), mean_absolute_error(y_train, y_calib), r2_score(
         y_train, y_calib)
     ## Validation Metrics
-    rmse_p, mae_p, score_p = np.sqrt(mean_squared_error(y_test, y_pred)), mean_absolute_error(y_test, y_pred), r2_score(
-        y_test, y_pred)
+    rmse_p, mae_p, score_p, sd = np.sqrt(mean_squared_error(y_test, y_pred)), mean_absolute_error(y_test, y_pred), r2_score(
+        y_test, y_pred),  np.std(y_test)
+    rpd = sd / rmse_p
 
     print('R2 Calib: %5.3f' % score_calib)
     print('R2 Valid: %5.3f' % score_p)
@@ -195,6 +196,7 @@ def printKennardStonePLS(X_train, y_train,X_test, y_test, n_components):
     print('MSE Valid: %5.3f' % rmse_p)
     print("MAE Calib: %5.3f" % mae_calib)
     print("MAE Valid: %5.3f" % mae_p)
+    print("RPD : %5.3f" % rpd)
 
     z = np.polyfit(y_test, y_pred, 1)
     with plt.style.context(('ggplot')):

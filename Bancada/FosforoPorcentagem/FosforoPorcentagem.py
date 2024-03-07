@@ -183,7 +183,8 @@ def printKennardStonePLS(X_train, y_train,X_test, y_test, n_components):
 
     # metrics in prediction
     ## Calibration Metrics
-    rmse_calib, mae_calib, score_calib = np.sqrt(mean_squared_error(y_train, y_calib)), mean_absolute_error(y_train, y_calib), r2_score (y_train, y_calib)
+    rmse_calib, mae_calib, score_calib, sdc = np.sqrt(mean_squared_error(y_train, y_calib)), mean_absolute_error(y_train, y_calib), r2_score (y_train, y_calib),  np.std(y_train)
+    rpdc = sdc/rmse_calib
     ## Validation Metrics
     rmse_p, mae_p, score_p, sd = np.sqrt(mean_squared_error(y_test, y_pred)), mean_absolute_error(y_test, y_pred), r2_score(
         y_test, y_pred), np.std(y_test)
@@ -195,6 +196,7 @@ def printKennardStonePLS(X_train, y_train,X_test, y_test, n_components):
     print('MSE Valid: %5.3f' % rmse_p)
     print("MAE Calib: %5.3f" % mae_calib)
     print("MAE Valid: %5.3f" % mae_p)
+    print("RPDC : %5.3f" % rpdc)
     print("RPD : %5.3f" % rpd)
 
     z = np.polyfit(y_test, y_pred, 1)
@@ -203,7 +205,7 @@ def printKennardStonePLS(X_train, y_train,X_test, y_test, n_components):
         ax.scatter(y_pred, y_test, c='red', edgecolors='k')
         ax.plot(z[1] + z[0] * y_test, y_test, c='blue', linewidth=1)
         ax.plot(y_test, y_test, color='green', linewidth=1)
-        plt.title('$R^{2}$ (CV): ' + str(score_p))
+        plt.title('$R^{2}$: ' + str(score_p))
         plt.xlabel('Fosforo Predito (porcentagem)')
         plt.ylabel('Fosforo Medido (porcentagem)')
 
